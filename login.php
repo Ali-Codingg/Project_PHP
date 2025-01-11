@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION["user_id"] = $user["id"];
                 $_SESSION["name"] = $user["name"];
                 $_SESSION["email"] = $user["email"];
+                $_SESSION['user_role'] = $user['role'];
                 // It's insecure to store the password hash in session; remove it
                 // $_SESSION["password"] = $user["password"];
                 
