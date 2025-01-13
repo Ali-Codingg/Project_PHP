@@ -107,7 +107,7 @@ $added_id = isset($_GET['added']) ? $_GET['added'] : null;
                         <!-- Show Cart and Logout for normal users -->
                         <?php if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="cart.php">Cart</a>
+                            <a class="nav-link" href="view_cart.php">Cart</a>
                         </li>
                         <?php endif; ?>
                         <li class="nav-item">
