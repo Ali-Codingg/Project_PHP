@@ -14,8 +14,6 @@ if ($result) {
         while ($product = mysqli_fetch_assoc($result)) {
             $products[] = $product;
         }
-    } else {
-        $products = [];
     }
 } else {
     // Handle SQL query error
@@ -23,6 +21,9 @@ if ($result) {
 }
 
 mysqli_close($conn);
+
+// Get the product id that was added, if any (for alert messages)
+$added_id = isset($_GET['added']) ? $_GET['added'] : null;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +36,6 @@ mysqli_close($conn);
         body {
             background-color: #f8f9fa;
         }
-
         /* Product Card */
         .product-card {
             border: none;
@@ -43,12 +43,10 @@ mysqli_close($conn);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-
         .product-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
-
         /* Product Image */
         .product-image {
             width: 100%;
@@ -57,42 +55,35 @@ mysqli_close($conn);
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
         }
-
         /* Card Title */
         .card-title {
             font-size: 1.25rem;
             font-weight: bold;
             color: #333;
         }
-
         /* Card Text */
         .card-text {
             color: #555;
         }
-
         /* Add to Cart Button */
         .btn-warning {
             background-color: #ffc107;
             border: none;
             color: #343a40;
         }
-
         .btn-warning:hover {
             background-color: #e0a800;
             color: #fff;
         }
-
         /* Delete Button */
         .delete-btn {
             background-color: #dc3545;
             border: none;
             color: white;
         }
-
         .delete-btn:hover {
             background-color: #c82333;
         }
-
         /* Align text and buttons inside card-body */
         .card-body {
             display: flex;
@@ -113,9 +104,12 @@ mysqli_close($conn);
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <?php if (isset($_SESSION['user_id'])): ?>
+                        <!-- Show Cart and Logout for normal users -->
+                        <?php if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin'): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="cart.php">Cart</a>
                         </li>
+                        <?php endif; ?>
                         <li class="nav-item">
                             <a class="nav-link" href="logout.php">Logout (<?php echo htmlspecialchars($_SESSION['name']); ?>)</a>
                         </li>
@@ -147,11 +141,18 @@ mysqli_close($conn);
             <?php if (!empty($products)): ?>
                 <?php foreach ($products as $product): ?>
                     <div class="col">
-                        <div class="card product-card h-100">
+                        <div class="card product-card h-100 position-relative">
+                            <?php if ($added_id && $added_id == $product['id']): ?>
+                                <div class="alert alert-success alert-dismissible fade show position-absolute" 
+                                    style="top: 10px; right: 10px; z-index: 10; min-width: 200px;">
+                                    Product added to cart!
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            <?php endif; ?>
                             <!-- Product Image -->
                             <img src="<?php echo htmlspecialchars($product['image'] ?: 'https://via.placeholder.com/300x200.png?text=No+Image'); ?>" 
-                                 class="card-img-top product-image" 
-                                 alt="<?php echo htmlspecialchars($product['name']); ?>">
+                                class="card-img-top product-image" 
+                                alt="<?php echo htmlspecialchars($product['name']); ?>">
                             <div class="card-body d-flex flex-column">
                                 <!-- Product Name -->
                                 <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
@@ -165,28 +166,30 @@ mysqli_close($conn);
                                 <!-- Product Stock -->
                                 <p class="card-text"><strong>Stock:</strong> <?php echo htmlspecialchars($product['stock']); ?></p>
                                 
-                                <!-- Add to Cart Form -->
-                                <form action="add_to_cart.php" method="POST" class="mt-auto">
-                                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
-                                    <label for="quantity_<?php echo htmlspecialchars($product['id']); ?>">Quantity:</label>
-                                    <input type="number" id="quantity_<?php echo htmlspecialchars($product['id']); ?>" 
-                                           name="quantity" class="form-control mb-2" value="1" 
-                                           min="1" max="<?php echo htmlspecialchars($product['stock']); ?>" required>
-                                    <button type="submit" class="btn btn-warning w-100">Add to Cart</button>
-                                </form>
+                                <!-- Only show Add to Cart for non-admin users -->
+                                <?php if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin'): ?>
+                                    <form action="add_to_cart.php" method="POST" class="mt-auto">
+                                        <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
+                                        <label for="quantity_<?php echo htmlspecialchars($product['id']); ?>">Quantity:</label>
+                                        <input type="number" id="quantity_<?php echo htmlspecialchars($product['id']); ?>" 
+                                            name="quantity" class="form-control mb-2" value="1" 
+                                            min="1" max="<?php echo htmlspecialchars($product['stock']); ?>" required>
+                                        <button type="submit" class="btn btn-warning w-100">Add to Cart</button>
+                                    </form>
+                                <?php endif; ?>
                                 
-                              <!-- Admin Controls: Edit and Delete -->
-<?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'): ?>
-    <div class="mt-3 d-flex justify-content-between">
-        <!-- Edit Button -->
-        <a href="edit_product.php?id=<?php echo htmlspecialchars($product['id']); ?>" class="btn btn-primary w-50 me-1">Edit</a>
-        <!-- Delete Button -->
-        <form action="delete_product.php" method="POST" class="w-50 ms-1">
-            <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
-            <button type="submit" class="btn delete-btn w-100">Delete</button>
-        </form>
-    </div>
-<?php endif; ?>
+                                <!-- Admin Controls: Edit and Delete (visible only to admin users) -->
+                                <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'): ?>
+                                    <div class="mt-3 d-flex justify-content-between">
+                                        <!-- Edit Button -->
+                                        <a href="edit_product.php?id=<?php echo htmlspecialchars($product['id']); ?>" class="btn btn-primary w-50 me-1">Edit</a>
+                                        <!-- Delete Button -->
+                                        <form action="delete_product.php" method="POST" class="w-50 ms-1">
+                                            <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
+                                            <button type="submit" class="btn delete-btn w-100">Delete</button>
+                                        </form>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -199,7 +202,7 @@ mysqli_close($conn);
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@ include('config.php');
 
 
 if(isset($_POST['update'])){
-     $ID = $_POST['id'];
+     $ID = $_POST['product_id'];
      $NAME = $_POST['name'];
      $PRICE = $_POST['price'];
      $DESCRIPTION = $_POST['description'];
@@ -17,13 +17,13 @@ if(isset($_POST['update'])){
 
      mysqli_query($conn,$update);
 
-     if(move_uploaded_file($image_location,'images/'.$image_name)){
+     if(move_uploaded_file($image_location,'assets/images/'.$image_name)){
         echo "<script>alert('It was updated successfuly.');</script>";
      }else {
         echo "<script>alert('There is a problem.');</script>";
      }
 
-     header('location: index.php');
+     header('location:products.php');
 
 
 }

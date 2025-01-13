@@ -68,7 +68,7 @@ mysqli_close($conn);
                     <div class="card-body">
                         <form action="update_product.php" method="POST" enctype="multipart/form-data">
                             <!-- Hidden field to store product ID -->
-                            <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
+                            <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product_id); ?>">
                             
                             <div class="mb-3">
                                 <label for="name" class="form-label">Product Name</label>
