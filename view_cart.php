@@ -103,7 +103,7 @@ mysqli_close($conn);
                             <td>$<?php echo number_format($subtotal, 2); ?></td>
                             <td>
                                 <!-- Remove item from cart -->
-                                <form action="remove-from_cart.php" method="POST">
+                                <form action="remove_from_cart.php" method="POST">
                                     <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($item['product_id']); ?>">
                                     <button type="submit" class="btn btn-danger btn-sm">Remove</button>
                                 </form>
