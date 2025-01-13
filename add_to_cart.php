@@ -9,7 +9,7 @@ $sql="SELECT * FROM cart WHERE user_id='$user_id'
       AND product_id='$product_id'";
 $result = mysqli_query($conn,$sql);
 if(mysqli_num_rows($result)> 0){
-    $update="UPDATE cart set quantity=quantity+'$quantity'";
+    $update = "UPDATE cart SET quantity = quantity + '$quantity' WHERE user_id='$user_id' AND product_id='$product_id'";
 }
 else{
     $update= "INSERT INTO cart(user_id, product_id, quantity)
