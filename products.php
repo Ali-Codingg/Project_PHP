@@ -31,73 +31,33 @@ mysqli_close($conn);
     <title>Products - Honey E-Commerce</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional: Custom CSS for additional styling -->
     <style>
         body {
             background-color: #f8f9fa;
         }
-
-        /* Product Card */
         .product-card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 30px;
         }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Product Image */
         .product-image {
-            width: 100%;
-            height: 200px;       /* Fixed height for all images */
-            object-fit: cover;   /* Ensures image covers the entire container */
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
+            height: 200px;
+            object-fit: cover;
         }
-
-        /* Card Title */
-        .card-title {
-            font-size: 1.25rem;
+        .navbar-brand {
             font-weight: bold;
-            color: #333;
+            color: #ffc107 !important; /* Honey-like color */
         }
-
-        /* Card Text */
-        .card-text {
-            color: #555;
+        .navbar-nav .nav-link {
+            color: #343a40 !important;
         }
-
-        /* Add to Cart Button */
-        .btn-warning {
+        .add-to-cart-btn {
             background-color: #ffc107;
             border: none;
             color: #343a40;
         }
-
-        .btn-warning:hover {
+        .add-to-cart-btn:hover {
             background-color: #e0a800;
             color: #fff;
-        }
-
-        /* Delete Button */
-        .delete-btn {
-            background-color: #dc3545;
-            border: none;
-            color: white;
-        }
-
-        .delete-btn:hover {
-            background-color: #c82333;
-        }
-
-        /* Align text and buttons inside card-body */
-        .card-body {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
         }
     </style>
 </head>
@@ -142,16 +102,21 @@ mysqli_close($conn);
             </div>
         <?php endif; ?>
 
-        <!-- Products Grid: Using row-cols-md-3 for 3 cards per row -->
-        <div class="row row-cols-md-3 g-4">
+        <!-- Products Grid -->
+        <div class="row">
             <?php if (!empty($products)): ?>
                 <?php foreach ($products as $product): ?>
-                    <div class="col">
-                        <div class="card product-card h-100">
+                    <div class="col-md-4">
+                        <div class="card product-card">
                             <!-- Product Image -->
-                            <img src="<?php echo htmlspecialchars($product['image'] ?: 'https://via.placeholder.com/300x200.png?text=No+Image'); ?>" 
-                                 class="card-img-top product-image" 
-                                 alt="<?php echo htmlspecialchars($product['name']); ?>">
+                            <?php if (!empty($product['image'])): ?>
+                                <img src="<?php echo htmlspecialchars($product['image']); ?>" 
+                                     class="card-img-top product-image" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                            <?php else: ?>
+                                <img src="https://via.placeholder.com/300x200.png?text=No+Image" 
+                                     class="card-img-top product-image" alt="No Image Available">
+                            <?php endif; ?>
+
                             <div class="card-body d-flex flex-column">
                                 <!-- Product Name -->
                                 <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
@@ -166,27 +131,29 @@ mysqli_close($conn);
                                 <p class="card-text"><strong>Stock:</strong> <?php echo htmlspecialchars($product['stock']); ?></p>
                                 
                                 <!-- Add to Cart Form -->
-                                <form action="add_to_cart.php" method="POST" class="mt-auto">
-                                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
-                                    <label for="quantity_<?php echo htmlspecialchars($product['id']); ?>">Quantity:</label>
-                                    <input type="number" id="quantity_<?php echo htmlspecialchars($product['id']); ?>" 
-                                           name="quantity" class="form-control mb-2" value="1" 
-                                           min="1" max="<?php echo htmlspecialchars($product['stock']); ?>" required>
-                                    <button type="submit" class="btn btn-warning w-100">Add to Cart</button>
-                                </form>
-                                
-                              <!-- Admin Controls: Edit and Delete -->
-<?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'): ?>
-    <div class="mt-3 d-flex justify-content-between">
-        <!-- Edit Button -->
-        <a href="edit_product.php?id=<?php echo htmlspecialchars($product['id']); ?>" class="btn btn-primary w-50 me-1">Edit</a>
-        <!-- Delete Button -->
-        <form action="delete_product.php" method="POST" class="w-50 ms-1">
-            <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
-            <button type="submit" class="btn delete-btn w-100">Delete</button>
-        </form>
-    </div>
-<?php endif; ?>
+                                <?php if ($product['stock'] > 0): ?>
+                                    <form action="add_to_cart.php" method="POST" class="mt-auto">
+                                        <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
+                                        <div class="mb-3">
+                                            <label for="quantity_<?php echo htmlspecialchars($product['id']); ?>" class="form-label">Quantity:</label>
+                                            <input 
+                                                type="number" 
+                                                id="quantity_<?php echo htmlspecialchars($product['id']); ?>" 
+                                                name="quantity" 
+                                                class="form-control" 
+                                                value="1" 
+                                                min="1" 
+                                                max="<?php echo htmlspecialchars($product['stock']); ?>" 
+                                                required
+                                            >
+                                        </div>
+                                        <button type="submit" class="btn add-to-cart-btn w-100">Add to Cart</button>
+                                    </form>
+                                <?php else: ?>
+                                    <div class="alert alert-warning text-center" role="alert">
+                                        Out of Stock
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -199,7 +166,9 @@ mysqli_close($conn);
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap JS Bundle with Popper (for interactive components) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Optional: Custom JS for additional functionality -->
 </body>
 </html>
+
