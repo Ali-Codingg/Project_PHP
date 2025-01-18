@@ -80,7 +80,7 @@ mysqli_close($conn);
             <form action="checkout_process.php" method="POST">
                 <div class="mb-3">
                     <label for="address" class="form-label">Shipping Address:</label>
-                    <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+                    <textarea class="form-control" id="address" name="shipping_address" rows="3" required></textarea>
                 </div>
                 <!-- Additional fields (like phone number or payment details) could be added here -->
                 <button type="submit" class="btn btn-success">Place Order</button>
