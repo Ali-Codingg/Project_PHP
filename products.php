@@ -8,7 +8,6 @@ $result = mysqli_query($conn, $sql);
 
 // Initialize an array to hold products
 $products = [];
-
 if ($result) {
     if (mysqli_num_rows($result) > 0) {
         while ($product = mysqli_fetch_assoc($result)) {
@@ -104,12 +103,20 @@ $added_id = isset($_GET['added']) ? $_GET['added'] : null;
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <?php if (isset($_SESSION['user_id'])): ?>
-                        <!-- Show Cart and Logout for normal users -->
+                        <!-- Show Cart link only for non-admin users -->
                         <?php if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin'): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="view_cart.php">Cart</a>
                         </li>
                         <?php endif; ?>
+                        
+                        <!-- Admin-only link: Manage Orders -->
+                        <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="manage_orders.php">Manage Orders</a>
+                        </li>
+                        <?php endif; ?>
+                        
                         <li class="nav-item">
                             <a class="nav-link" href="logout.php">Logout (<?php echo htmlspecialchars($_SESSION['name']); ?>)</a>
                         </li>
@@ -179,7 +186,7 @@ $added_id = isset($_GET['added']) ? $_GET['added'] : null;
                                 <?php endif; ?>
                                 
                                 <!-- Admin Controls: Edit and Delete (visible only to admin users) -->
-                                <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin'): ?>
+                                <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                                     <div class="mt-3 d-flex justify-content-between">
                                         <!-- Edit Button -->
                                         <a href="edit_product.php?id=<?php echo htmlspecialchars($product['id']); ?>" class="btn btn-primary w-50 me-1">Edit</a>

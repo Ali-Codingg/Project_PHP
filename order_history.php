@@ -37,7 +37,6 @@ mysqli_close($conn);
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Order ID</th>
             <th>Date</th>
             <th>Total</th>
             <th>Status</th>
@@ -47,7 +46,6 @@ mysqli_close($conn);
         <tbody>
           <?php foreach ($orders as $order): ?>
           <tr>
-            <td><?php echo htmlspecialchars($order['id']); ?></td>
             <td><?php echo htmlspecialchars($order['order_date']); ?></td>
             <td>$<?php echo number_format($order['total'], 2); ?></td>
             <td><?php echo htmlspecialchars($order['status'] ?? 'Pending'); ?></td>

@@ -40,7 +40,6 @@ mysqli_close($conn);
       <table class="table table-bordered">
         <thead class="table-light">
           <tr>
-            <th>Order ID</th>
             <th>Customer</th>
             <th>Date</th>
             <th>Total</th>
@@ -51,7 +50,6 @@ mysqli_close($conn);
         <tbody>
           <?php foreach ($orders as $order): ?>
           <tr>
-            <td><?php echo htmlspecialchars($order['id']); ?></td>
             <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
             <td><?php echo htmlspecialchars($order['order_date']); ?></td>
             <td>$<?php echo number_format($order['total'],2); ?></td>

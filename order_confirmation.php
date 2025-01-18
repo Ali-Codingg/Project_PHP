@@ -82,7 +82,6 @@ mysqli_close($conn);
       
       <div class="row order-header">
           <div class="col-md-6">
-              <h4>Order ID: <?php echo htmlspecialchars($order['id']); ?></h4>
               <p><strong>Order Date:</strong> <?php echo htmlspecialchars($order['order_date']); ?></p>
               <p><strong>Status:</strong> <?php echo htmlspecialchars($order['status'] ?? 'Pending'); ?></p>
           </div>
