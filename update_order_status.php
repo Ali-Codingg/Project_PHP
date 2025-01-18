@@ -43,14 +43,13 @@ mysqli_close($conn);
 </head>
 <body>
   <div class="container mt-5">
-    <h2>Update Order Status for Order #<?php echo htmlspecialchars($order_id); ?></h2>
+    <h2>Update Order Status</h2>
     <form action="update_order_status.php?order_id=<?php echo htmlspecialchars($order_id); ?>" method="POST">
       <div class="mb-3">
         <label for="status" class="form-label">New Status:</label>
         <select name="status" id="status" class="form-select">
           <option value="Pending" <?php if (($order['status'] ?? '') == 'Pending') echo 'selected'; ?>>Pending</option>
-          <option value="Shipped" <?php if (($order['status'] ?? '') == 'Shipped') echo 'selected'; ?>>Shipped</option>
-          <option value="Delivered" <?php if (($order['status'] ?? '') == 'Delivered') echo 'selected'; ?>>Delivered</option>
+          <option value="Completed" <?php if (($order['status'] ?? '') == 'Completed') echo 'selected'; ?>>Completed</option>
           <option value="Cancelled" <?php if (($order['status'] ?? '') == 'Cancelled') echo 'selected'; ?>>Cancelled</option>
         </select>
       </div>

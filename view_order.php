@@ -66,12 +66,12 @@ mysqli_close($conn);
   
   <!-- Main Container -->
   <div class="container mt-5">
-      <h2>Order Details - Order #<?php echo htmlspecialchars($order_id); ?></h2>
+      <h2>Order Details</h2>
       <div class="card mb-3">
           <div class="card-body">
               <p><strong>Date:</strong> <?php echo htmlspecialchars($order['order_date']); ?></p>
               <p><strong>Shipping Address:</strong> <?php echo htmlspecialchars($order['shipping_address']); ?></p>
-              <p><strong>Total:</strong> $<?php echo number_format($order['total'],2); ?></p>
+              <p><strong>Total:</strong> $<?php echo number_format($order['total_amount'],2); ?></p>
               <p><strong>Status:</strong> <?php echo htmlspecialchars($order['status'] ?? 'Pending'); ?></p>
           </div>
       </div>

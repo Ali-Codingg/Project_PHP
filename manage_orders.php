@@ -52,8 +52,8 @@ mysqli_close($conn);
           <tr>
             <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
             <td><?php echo htmlspecialchars($order['order_date']); ?></td>
-            <td>$<?php echo number_format($order['total'],2); ?></td>
-            <td><?php echo htmlspecialchars($order['status'] ?? 'Pending'); ?></td>
+            <td>$<?php echo number_format($order['total_amount'],2); ?></td>
+            <td><?php echo htmlspecialchars($order['status'] ); ?></td>
             <td>
               <a href="view_order.php?order_id=<?php echo $order['id']; ?>" class="btn btn-info btn-sm">View</a>
               <a href="update_order_status.php?order_id=<?php echo $order['id']; ?>" class="btn btn-warning btn-sm">Update Status</a>
