@@ -4,7 +4,7 @@ include('config.php');
 
 // Ensure the user is an admin
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    header("Location: products.php");
+    header("Location: login.php");
     exit();
 }
 

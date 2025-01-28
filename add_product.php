@@ -1,6 +1,11 @@
 <?php
 // Include the database configuration
+session_start();
 include('config.php');
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+    exit();
+}
 
 // Check if the form is submitted
 if (isset($_POST['Add'])) {
