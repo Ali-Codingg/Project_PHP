@@ -13,7 +13,7 @@ if(isset($_POST['update'])){
      $image_location = $_FILES['image']['tmp_name'];
      $image_name = $_FILES['image']['name'];
      $image_up = "assets/images/".$image_name;
-     $update = "UPDATE products SET name='$NAME',description='$DESCRIPTION',price='$PRICE',image='$image_up' WHERE id=$ID";
+     $update = "UPDATE products SET name='$NAME',description='$DESCRIPTION',stock='$STOCK',price='$PRICE',image='$image_up' WHERE id=$ID";
 
      mysqli_query($conn,$update);
 
