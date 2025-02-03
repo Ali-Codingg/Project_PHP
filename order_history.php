@@ -1,17 +1,19 @@
 <?php
-session_start();
-include('config.php');
 
-// Ensure the user is logged in
-if (!isset($_SESSION['user_id'])) {
+session_start(); 
+
+include('config.php'); 
+
+
+if (!isset($_SESSION['user_id'])) {  
     header("Location: login.php");
     exit();
 }
 
-$user_id = $_SESSION['user_id'];
+$user_id = $_SESSION['user_id']; 
 
-$sql = "SELECT * FROM orders WHERE user_id='$user_id' ORDER BY order_date DESC";
-$result = mysqli_query($conn, $sql);
+$sql = "SELECT * FROM orders WHERE user_id='$user_id' ORDER BY order_date DESC"; 
+$result = mysqli_query($conn, $sql); 
 
 $orders = [];
 if ($result) {
