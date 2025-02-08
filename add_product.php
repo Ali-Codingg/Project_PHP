@@ -79,7 +79,7 @@ if (isset($_POST['Add'])) {
                 <ul class="navbar-nav">
                     <!-- You can add menu items as needed -->
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Products</a>
+                        <a class="nav-link" href="products.php">Products</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="add_product.php">Add Product</a>
