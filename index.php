@@ -2,17 +2,32 @@
 session_start();
 include('config.php');
 
-// Optionally, you could fetch featured products here
-// For example:
-// $sqlFeatured = "SELECT * FROM products WHERE featured=1 LIMIT 3";
-// $resultFeatured = mysqli_query($conn, $sqlFeatured);
-// $featuredProducts = [];
-// if($resultFeatured){
-//     while($row = mysqli_fetch_assoc($resultFeatured)){
-//         $featuredProducts[] = $row;
-//     }
-// }
-// mysqli_close($conn);
+// Fetch all products from the database
+$sql = "SELECT * FROM products";
+$result = mysqli_query($conn, $sql);
+
+// Initialize an array to hold products
+$products = [];
+if ($result) {
+    if (mysqli_num_rows($result) > 0) {
+        while ($product = mysqli_fetch_assoc($result)) {
+            $products[] = $product;
+        }
+    }
+} else {
+    // Handle SQL query error
+    $error_message = "An error occurred while fetching products. Please try again later.";
+}
+
+mysqli_close($conn);
+
+// Get the product id that was added, if any (for alert messages)
+$added_id = isset($_GET['added']) ? $_GET['added'] : null;
+
+// Filter the products to get only those with stock 5 or less
+$featuredProducts = array_filter($products, function($product) {
+    return $product['stock'] <= 5;
+});
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,17 +57,23 @@ include('config.php');
         }
         .hero-text h1 {
             font-size: 3rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
         }
         .hero-text p {
             font-size: 1.5rem;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
         }
-        /* Featured Products */
+        /* Featured Products Card */
         .card-img-top {
             height: 200px;
             object-fit: cover;
         }
+        /* Review Text Styling */
+        .review-text {
+            font-style: italic;
+            color: #888;
+        }
+        /* Footer Styling */
         footer {
             background-color: #fff;
             padding: 15px 0;
@@ -76,18 +97,18 @@ include('config.php');
                     <li class="nav-item">
                         <a class="nav-link" href="products.php">Products</a>
                     </li>
-                    <?php if(isset($_SESSION['user_id'])): ?>
+                    <?php if (isset($_SESSION['user_id'])): ?>
                         <!-- Show Cart for non-admin users -->
-                        <?php if(!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin'): ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="view_cart.php">Cart</a>
-                            </li>
+                        <?php if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin'): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="view_cart.php">Cart</a>
+                        </li>
                         <?php endif; ?>
-                        <!-- Show Manage Orders link for admin users -->
-                        <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="manage_orders.php">Manage Orders</a>
-                            </li>
+                        <!-- Show Manage Orders for admin users -->
+                        <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="manage_orders.php">Manage Orders</a>
+                        </li>
                         <?php endif; ?>
                         <li class="nav-item">
                             <a class="nav-link" href="logout.php">Logout (<?php echo htmlspecialchars($_SESSION['name']); ?>)</a>
@@ -117,26 +138,33 @@ include('config.php');
     <!-- Featured Products Section -->
     <div class="container my-5">
         <h2 class="text-center mb-4">Featured Products</h2>
+        <?php if (!empty($featuredProducts)): ?>
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            <?php 
-            // If you have dynamic featured products, loop through them.
-            // For demonstration, we'll create three dummy cards.
-            for ($i = 1; $i <= 3; $i++):
-            ?>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="https://via.placeholder.com/300x200?text=Product+<?php echo $i; ?>" class="card-img-top" alt="Product <?php echo $i; ?>">
-                    <div class="card-body">
-                        <h5 class="card-title">Product <?php echo $i; ?></h5>
-                        <p class="card-text">Short description of Product <?php echo $i; ?>.</p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="products.php" class="btn btn-warning w-100">View Product</a>
+            <?php foreach ($featuredProducts as $product): ?>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="<?php echo htmlspecialchars($product['image'] ?: 'https://via.placeholder.com/300x200.png?text=No+Image'); ?>" 
+                             class="card-img-top" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
+                            <p class="card-text"><?php echo htmlspecialchars($product['description']); ?></p>
+                            <!-- Display short review if available -->
+                            <?php if (isset($product['review']) && !empty($product['review'])): ?>
+                                <p class="review-text"><?php echo htmlspecialchars($product['review']); ?></p>
+                            <?php endif; ?>
+                            <p class="card-text"><strong>Price:</strong> $<?php echo number_format($product['price'], 2); ?></p>
+                            <p class="card-text"><strong>Stock:</strong> <?php echo htmlspecialchars($product['stock']); ?></p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="products.php" class="btn btn-warning w-100">View Product</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <?php endfor; ?>
+            <?php endforeach; ?>
         </div>
+        <?php else: ?>
+            <p class="text-center">No featured products available at the moment.</p>
+        <?php endif; ?>
     </div>
 
     <!-- About Section -->
