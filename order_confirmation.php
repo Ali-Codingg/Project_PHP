@@ -33,7 +33,7 @@ if (isset($_POST['confirm_receipt'])) {
     $received_at = date('Y-m-d H:i:s');
     $update_sql = "UPDATE orders SET received_at='$received_at' WHERE id='$order_id'";
     mysqli_query($conn, $update_sql);
-    header("Location: order_history.php");
+    header("Location: order_confirmed.php?order_id=" . $order_id);
     exit();
 }
 

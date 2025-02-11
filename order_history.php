@@ -1,19 +1,17 @@
 <?php
+session_start();
+include('config.php');
 
-session_start(); 
-
-include('config.php'); 
-
-
-if (!isset($_SESSION['user_id'])) {  
+// Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
-$user_id = $_SESSION['user_id']; 
+$user_id = $_SESSION['user_id'];
 
-$sql = "SELECT * FROM orders WHERE user_id='$user_id' ORDER BY order_date DESC"; 
-$result = mysqli_query($conn, $sql); 
+$sql = "SELECT * FROM orders WHERE user_id='$user_id' ORDER BY order_date DESC";
+$result = mysqli_query($conn, $sql);
 
 $orders = [];
 if ($result) {
@@ -29,12 +27,22 @@ mysqli_close($conn);
   <meta charset="UTF-8">
   <title>Order History - Honey E-Commerce</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+      body {
+          background-color: #f8f9fa;
+      }
+  </style>
 </head>
 <body>
   <div class="container mt-5">
-    <h2>Your Order History</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Your Order History</h2>
+      <!-- Back to Products Button -->
+      <a href="products.php" class="btn btn-warning">Back to Products</a>
+    </div>
+
     <?php if (empty($orders)): ?>
-      <p>You haven't placed any orders yet. <a href="products.php">Shop now!</a></p>
+      <div class="alert alert-info">You haven't placed any orders yet. <a href="products.php">Shop now!</a></div>
     <?php else: ?>
       <table class="table table-striped">
         <thead>
@@ -60,6 +68,7 @@ mysqli_close($conn);
       </table>
     <?php endif; ?>
   </div>
+  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

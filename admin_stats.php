@@ -75,11 +75,11 @@ mysqli_close($conn);
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="manage_orders.php">Manage Orders</a>
+                <li class="nav-item">
+                        <a class="nav-link" href="products.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="admin_stats.php">Statistics</a>
+                        <a class="nav-link" href="manage_orders.php">Manage Orders</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="logout.php">Logout (<?php echo htmlspecialchars($_SESSION['name']); ?>)</a>

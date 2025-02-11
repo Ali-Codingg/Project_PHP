@@ -30,10 +30,6 @@ mysqli_close($conn);
             background-color: #f8f9fa;
         }
         /* Custom styling for the navigation bar */
-        .navbar-brand {
-            font-weight: bold;
-            color: #ffc107 !important;
-        }
         .nav-link {
             color: #343a40 !important;
         }
@@ -58,6 +54,9 @@ mysqli_close($conn);
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="products.php">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="order_history.php">My orders</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="logout.php">Logout</a>

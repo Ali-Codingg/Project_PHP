@@ -53,10 +53,6 @@ if (isset($_POST['Add'])) {
         body {
             background-color: #f8f9fa;
         }
-        .navbar-brand {
-            font-weight: bold;
-            color: #ffc107 !important;
-        }
         .navbar-nav .nav-link {
             color: #343a40 !important;
         }
@@ -79,10 +75,7 @@ if (isset($_POST['Add'])) {
                 <ul class="navbar-nav">
                     <!-- You can add menu items as needed -->
                     <li class="nav-item">
-                        <a class="nav-link" href="products.php">Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="add_product.php">Add Product</a>
+                        <a class="nav-link" href="products.php">Back to products</a>
                     </li>
                     <!-- Optionally, links to Login/Logout based on session -->
                 </ul>

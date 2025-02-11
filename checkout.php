@@ -84,6 +84,7 @@ mysqli_close($conn);
                 </div>
                 <!-- Additional fields (like phone number or payment details) could be added here -->
                 <button type="submit" class="btn btn-success">Place Order</button>
+                <a href="view_cart.php" class="btn btn-secondary">Back</a>
             </form>
         <?php endif; ?>
     </div>
