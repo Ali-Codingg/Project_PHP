@@ -70,7 +70,7 @@ $added_id = isset($_GET['added']) ? $_GET['added'] : null;
         /* Product Image */
         .product-image {
             width: 100%;
-            height: 200px;       /* Fixed height for all images */
+            height: 300px;       /* Fixed height for all images */
             object-fit: cover;   /* Ensures image covers the entire container */
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
@@ -173,6 +173,9 @@ $added_id = isset($_GET['added']) ? $_GET['added'] : null;
                         <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="manage_orders.php">Manage Orders</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="add_product.php">Add Product</a>
                         </li>
                         <?php endif; ?>
                         
