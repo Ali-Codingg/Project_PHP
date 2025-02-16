@@ -129,31 +129,39 @@ $added_id = isset($_GET['added']) ? $_GET['added'] : null;
             </button>
 
 
-     <!-- Search and Filter Section -->
-        <div  class="container_mb-5">
-    <form method="GET" class="row g-3 align-items-center">
-        <!-- Search by Product Name -->
+            <div class="container mb-5">
+  <div class="card">
+    <div class="card-header bg-warning text-white">
+      <h5 class="mb-0">Search &amp; Filter Products</h5>
+    </div>
+    <div class="card-body">
+      <form method="GET" class="row g-3">
+        <!-- Product Name Search -->
         <div class="col-md-4">
-            <input type="text" name="search" id="search" class="form-control" placeholder="Enter product name" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" aria-label="Search products">
+          <label for="search" class="form-label">Product Name</label>
+          <input type="text" name="search" id="search" class="form-control" placeholder="Enter product name" 
+                 value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
         </div>
-
-     
-
-        <!-- Price Filter -->
-        <div class="col-md-3">
-        
-            <input type="number" name="min_price" id="min_price" class="form-control" placeholder="Min Price" value="<?php echo isset($_GET['min_price']) ? htmlspecialchars($_GET['min_price']) : ''; ?>" aria-label="Minimum price">
-    
-            <input type="number" name="max_price" id="max_price" class="form-control" placeholder="Max Price" value="<?php echo isset($_GET['max_price']) ? htmlspecialchars($_GET['max_price']) : ''; ?>" aria-label="Maximum price">
+        <!-- Minimum Price -->
+        <div class="col-md-4">
+          <label for="min_price" class="form-label">Minimum Price</label>
+          <input type="number" name="min_price" id="min_price" class="form-control" placeholder="Min Price" 
+                 value="<?php echo isset($_GET['min_price']) ? htmlspecialchars($_GET['min_price']) : ''; ?>">
         </div>
-
+        <!-- Maximum Price -->
+        <div class="col-md-4">
+          <label for="max_price" class="form-label">Maximum Price</label>
+          <input type="number" name="max_price" id="max_price" class="form-control" placeholder="Max Price" 
+                 value="<?php echo isset($_GET['max_price']) ? htmlspecialchars($_GET['max_price']) : ''; ?>">
+        </div>
         <!-- Submit Button -->
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-primary w-100">Search</button>
+        <div class="col-12 text-end">
+          <button type="submit" class="btn btn-warning">Search</button>
         </div>
-    </form>
+      </form>
+    </div>
+  </div>
 </div>
-
 
 
 
@@ -179,9 +187,6 @@ $added_id = isset($_GET['added']) ? $_GET['added'] : null;
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="add_product.php">Add Product</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="admin_stats.php">Statistics</a>
                         </li>
                         <?php endif; ?>
                         
