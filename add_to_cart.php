@@ -22,6 +22,6 @@ else{
 mysqli_query($conn,$update);
 echo "Product added to cart successfully!";
 mysqli_close( $conn );
-header("Location: products.php?added=" . urlencode($product_id));
+header("Location: products.php?added=" .$product_id);
 exit();
 ?>

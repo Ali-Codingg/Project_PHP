@@ -62,7 +62,7 @@ mysqli_close($conn);
   <!-- Navigation Bar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div class="container">
-          <a class="navbar-brand" href="products.php">Honey E-Commerce</a>
+          <a class="navbar-brand" href="index.php">Honey E-Commerce</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
                   data-bs-target="#navbarNav" aria-controls="navbarNav" 
                   aria-expanded="false" aria-label="Toggle navigation">
@@ -97,7 +97,6 @@ mysqli_close($conn);
       <div class="card mb-4">
           <div class="card-body">
               <h4>Order Details</h4>
-              <p><strong>Order ID:</strong> <?php echo htmlspecialchars($order['id']); ?></p>
               <p><strong>Order Date:</strong> <?php echo htmlspecialchars($order['order_date']); ?></p>
               <p><strong>Shipping Address:</strong><br>
                 <?php echo nl2br(htmlspecialchars($order['shipping_address'])); ?></p>

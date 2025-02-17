@@ -63,8 +63,6 @@ mysqli_close($conn);
   <div class="container">
     <div class="card shadow-sm">
       <h2 class="text-center mb-4">Order Details</h2>
-
-      <p><strong>Order ID:</strong> <?php echo htmlspecialchars($order['id']); ?></p>
       <p><strong>Total Amount:</strong> $<?php echo number_format($order['total_amount'], 2); ?></p>
       <p><strong>Placed On:</strong> <?php echo htmlspecialchars($order['order_date']); ?></p>
 

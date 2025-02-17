@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 session_regenerate_id(true);
                 
                 // Redirect to products page
-                header("Location: products.php");
+                header("Location:index.php");
                 exit();
             } else {
                 $error = "Incorrect password.";

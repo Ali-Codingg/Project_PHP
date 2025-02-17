@@ -39,8 +39,11 @@ while($item = mysqli_fetch_assoc($result)) {
     mysqli_query($conn, $insertDetail);
     
     // 4. Update the product stock (reduce available stock by the quantity ordered)
-    $updateStock = "UPDATE products SET stock = stock - '{$item['quantity']}' WHERE id = '{$item['product_id']}'";
-    mysqli_query($conn, $updateStock);
+    $updateStock = "UPDATE products 
+    SET stock = GREATEST(stock - '{$item['quantity']}', 0) 
+    WHERE id = '{$item['product_id']}'";
+mysqli_query($conn, $updateStock);
+
 }
 
 // 5. Update the order record with the calculated total amount
