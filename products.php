@@ -186,6 +186,9 @@ $added_id = isset($_GET['added']) ? $_GET['added'] : null;
                             <a class="nav-link" href="manage_orders.php">Manage Orders</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="admin_stats.php">Statistics</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="add_product.php">Add Product</a>
                         </li>
                         <?php endif; ?>
